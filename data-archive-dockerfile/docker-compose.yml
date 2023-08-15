@@ -1,0 +1,6 @@
+version: '3'
+services:
+  mosip-db-instance:
+    image: mosipdev/data-archive:1.0.0
+    env_file:
+      - .env
