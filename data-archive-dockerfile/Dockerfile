@@ -6,7 +6,18 @@ RUN apt-get update && apt-get install -y apt-utils && apt-get install -y curl
 RUN apt-get install -y python3
 RUN apt-get install -y python3-pip
 RUN apt-get install -y python3-xlrd
+RUN apt-get install -y python3.11-venv
 
+COPY requirements.txt .
+
+RUN python3 -m venv /venv
+# Activate the virtual environment
+ENV PATH="/venv/bin:$PATH"
+
+# Upgrade pip
+RUN pip3 install --upgrade pip
+
+RUN pip3 install -r requirements.txt
 
 WORKDIR /home/mosip
 
@@ -14,25 +25,20 @@ RUN mkdir -p madmin/database madmin/logs
 
 WORKDIR /home/mosip/madmin/database
 
-COPY ./repos/data-archive/data-archive/db_scripts .
+COPY ./repos/data-archive/data-archive/ .
 
-COPY entrypoint.sh .
+COPY *.sh ./
 
 RUN chmod +x *.sh
 
+ENV POSTGRES_USER=
+ENV POSTGRES_PASSWORD=
 ENV MOSIP_DB_NAME=
 ENV DB_SERVERIP=
 ENV DB_PORT=
-ENV SU_USER=postgres
-ENV SU_USER_PWD=
-ENV DEFAULT_DB_NAME=postgres
-ENV DBUSER_PWD=
-ENV COMMON_ROLE_FILENAME=
-ENV APP_ROLE_FILENAME=
-ENV DB_CREATION_FILENAME=
-ENV ACCESS_GRANT_FILENAME=
-ENV DDL_FILENAME=
-ENV DML_FLAG=
-ENV DML_FILENAME=
+ENV source_db_serverip= 
+ENV source_db_port=
+ENV archive_db_serverip=
+ENV archive_db_port=
 
 ENTRYPOINT ["./entrypoint.sh"]

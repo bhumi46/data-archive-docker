@@ -1,12 +1,16 @@
 #!/bin/sh
 # entrypoint.sh
 
-echo "Executing script"
-cd mosip_archive
+echo "Executing db.sh"
+chmod +x db.sh
+./db.sh
 
-# Print the environment variables for debugging
-env
+echo "executed db.sh succesfully"
 
-# Execute the deployment script with the properties file
-./mosip_archive_db_deploy.sh "$DB_SERVERIP" "$DB_PORT" "$SU_USER" "$DEFAULT_DB_NAME" "$MOSIP_DB_NAME" "$SYSADMIN_USER" "$BASEPATH" "$LOG_PATH" "$COMMON_ROLE_FILENAME" "$APP_ROLE_FILENAME" "$DB_CREATION_FILENAME" "$ACCESS_GRANT_FILENAME" "$DDL_FILENAME" "$DML_FLAG" "$DML_FILENAME"
-echo "Executed successfully"
+sleep 1m
+
+echo "Executing archive.sh"
+chmod +x archive.sh
+./archive.sh
+
+echo "executed archive.sh successfully"
